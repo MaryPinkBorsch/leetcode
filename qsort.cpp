@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iomanip>
 #include <math.h>
+#include <chrono>
+
 using namespace std;
 
 // fib(6) == fib(4) + fib(5) == (fib(2) + fib(3)) + (fib(3) + fib(4)) == (1 + (1 + 1)) + ((1 + 1) + (1 + (1 + 1))) == 8
@@ -63,6 +65,7 @@ void MASYA_shake(int *A, unsigned int len)
 
 void qsort_Mas(int *A, unsigned int len)
 {
+    bool swapped = false;
     if (len < 2)
         return;
     int pivot = (A[0] + A[len - 1]) / 2;
@@ -75,12 +78,15 @@ void qsort_Mas(int *A, unsigned int len)
             R--;
         if (L < R)
         {
+            swapped = true;
             int tmp = A[L];
             A[L] = A[R];
             A[R] = tmp;
         }
         else
         {
+            if (swapped == false)
+                return;
             qsort_Mas(A, L);
             if (L != 0)
                 qsort_Mas(A + L, len - L);
@@ -90,6 +96,12 @@ void qsort_Mas(int *A, unsigned int len)
 
 int main(int argc, char *argv[])
 {
+
+    // const auto start{std::chrono::steady_clock::now()};
+    // const auto end{std::chrono::steady_clock::now()};
+    // const std::chrono::duration<double> elapsed_seconds{end - start};
+
+    // std::cout << "Elapsed time: " << std::endl;
     int *p_int = nullptr;
     p_int = new int[100];
     for (int i = 0; i < 100; i++)
@@ -97,20 +109,32 @@ int main(int argc, char *argv[])
         p_int[i] = 100 - i;
     }
 
-    // print(p_int, 100);
-    // cout << endl;
-    // MASYA_shake(p_int, 100);
-    // print(p_int, 100);
+    print(p_int, 100);
+    cout << endl;
+
+    {
+        auto t_start = std::chrono::high_resolution_clock::now();
+        MASYA_shake(p_int, 100);
+        auto t_end = std::chrono::high_resolution_clock::now();
+        std::cout << std::fixed << "Shaker Elapsed time: " << std::chrono::duration<double>(t_end - t_start).count() << " sec" << std::endl;
+    }
+
+    print(p_int, 100);
 
     // int fib20 = fib(20);
     // cout << fib20 << endl;
     cout << endl;
-    // for (int i = 0; i < 100; i++)
-    // {
-    //     p_int[i] = 100 - i;
-    // }
+    for (int i = 0; i < 100; i++)
+    {
+        p_int[i] = 100 - i;
+    }
     print(p_int, 100);
-    qsort_Mas(p_int, 100);
+    {
+        auto t_start = std::chrono::high_resolution_clock::now();
+        qsort_Mas(p_int, 100);
+        auto t_end = std::chrono::high_resolution_clock::now();
+        std::cout << std::fixed << "QSort Elapsed time: " << std::chrono::duration<double>(t_end - t_start).count() << " sec" << std::endl;
+    }
     print(p_int, 100);
     cout << endl;
 
