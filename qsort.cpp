@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     print(p_int, 100);
     {
         auto t_start = std::chrono::high_resolution_clock::now();
-      //  qsort_Mas(p_int, 100);
+      //   qsort_Mas(p_int, 100);
         auto t_end = std::chrono::high_resolution_clock::now();
         std::cout << std::fixed << "QSort Elapsed time: " << std::chrono::duration<double>(t_end - t_start).count() << " sec" << std::endl;
     }
