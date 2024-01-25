@@ -2,6 +2,10 @@
 #include <fstream>
 #include <iomanip>
 #include <math.h>
+#include <vector>
+
+#include <string>
+
 #include <chrono>
 
 using namespace std;
@@ -63,36 +67,32 @@ void MASYA_shake(int *A, unsigned int len)
     }
 }
 
-void qsort_Mas(int *A, unsigned int len)
-{
-    bool swapped = false;
-    if (len < 2)
-        return;
-    int pivot = (A[0] + A[len - 1]) / 2;
-    int L = 0, R = len - 1;
-    while (L < R)
+void qsort_Mas(vector<string> &names, vector<int> &heights, int start, int finish)
     {
-        while (A[L] < pivot && L < R)
-            L++;
-        while (A[R] > pivot && L < R)
-            R--;
-        if (L < R)
+        if (finish - start < 1)
+            return;
+        int pivot = (heights[start] + heights[finish]) / 2;
+        int L = start, R = finish;
+        while (L < R)
         {
-            swapped = true;
-            int tmp = A[L];
-            A[L] = A[R];
-            A[R] = tmp;
-        }
-        else
-        {
-            if (swapped == false)
-                return;
-            qsort_Mas(A, L);
-            if (L != 0)
-                qsort_Mas(A + L, len - L);
+            while (heights[L] > pivot && L < R)
+                L++;
+            while (heights[R] < pivot && L < R)
+                R--;
+            if (L < R)
+            {
+                swap(heights[L], heights[R]);
+                swap(names[L], names[R]);
+            }
+            else
+            {
+                if (L > start)
+                    qsort_Mas(names, heights, start, L - 1);
+                if (L != 0)
+                    qsort_Mas(names, heights, L, finish);
+            }
         }
     }
-}
 
 int main(int argc, char *argv[])
 {
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     print(p_int, 100);
     {
         auto t_start = std::chrono::high_resolution_clock::now();
-        qsort_Mas(p_int, 100);
+      //  qsort_Mas(p_int, 100);
         auto t_end = std::chrono::high_resolution_clock::now();
         std::cout << std::fixed << "QSort Elapsed time: " << std::chrono::duration<double>(t_end - t_start).count() << " sec" << std::endl;
     }
