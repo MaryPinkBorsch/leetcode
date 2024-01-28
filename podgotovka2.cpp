@@ -45,6 +45,15 @@ struct IntList
     IntListNode *head = nullptr; // указатель на начало списка
 };
 
+// добавление new_val в список после заданного элемента where
+void InsertToList(IntListNode *where, int new_val)
+{
+    IntListNode *tmp = where->next; // сохранили старый "следующий" за where эелмент
+    where->next = new IntListNode;  // на его место поставили новый
+    where->next->value = new_val;   // присвоили новомоу элементу указанное значение
+    where->next->next = tmp;
+}
+
 void print_IntList(IntList &to_print)
 {
     IntListNode *cur = to_print.head;
@@ -63,25 +72,31 @@ int main(int argc, char *argv[])
     // списки из интов
     IntList myList;                // пустой список
     myList.head = new IntListNode; // создали "голову" списка
-    myList.head->value = 42;       // доступ к значению первого элемента (голове) по указателю из списка
+    myList.head->value = 0;        // доступ к значению первого элемента (голове) по указателю из списка
     // стрелочка это доступ по указателю
     // добавим второй эелемент
     myList.head->next = new IntListNode;
-    myList.head->next->value = 43;
+    myList.head->next->value = 1;
 
     // добавим третий эелемент
     myList.head->next->next = new IntListNode;
-    myList.head->next->next->value = 44;
+    myList.head->next->next->value = 2;
 
     // НЕУДОБНЕНЬКО!! скоро место кончится на экране
     IntListNode *cur = myList.head->next->next;
-    for (int i = 0; i < 100; ++i)
+    IntListNode *node99 = nullptr;
+    for (int i = 0; i < 150; ++i)
     {
         cur->next = new IntListNode;
         cur = cur->next;
-        cur->value = 45 + i;
+        cur->value = 3 + i;
+        if (i == 96)
+            node99 = cur;
     }
 
+    print_IntList(myList);
+    InsertToList(node99, 666);
+    cout << endl;
     print_IntList(myList);
     return 0;
 
