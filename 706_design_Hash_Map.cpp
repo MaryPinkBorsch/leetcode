@@ -1,7 +1,12 @@
 #include <math.h>
 #include <random>
+//хэш мап это массив из списков, элементы которых каждый содержат ключи
+// и соответствующие им значения 
+//выбор списка в массиве осуществляется "хэшированием" ключа 
+//(разные ключи могут захешироваться в 1 число и один список)
 
-struct MASYAListNode
+
+struct MASYAListNode // элемент списка с значением и "ключом"
 {
     int key;
     int val;
@@ -11,33 +16,33 @@ struct MASYAListNode
 class MyHashMap 
 {
 public:
-    static const int NUM_BUCKETS = 5000;
-    MASYAListNode * buckets [NUM_BUCKETS] = {nullptr};
+    static const int NUM_BUCKETS = 5000; // кол-во списоков (бУкетов = корзинок)
+    MASYAListNode * buckets [NUM_BUCKETS] = {nullptr}; // массив БУкетов-списков
 
-    int MyHash(int key)
+    int MyHash(int key) // функция ХЭШИРОВАНИЯ (ставит в соответсвтвие каждому ключу число)
     {
         static const int prime1 = 31;
         static const int prime2 = 65521;
-
+        //это простые числа
         return(key*prime1 + prime2);
     }
 
     MyHashMap() {
         
     }
-    
+    //добавление ключа и валуе
     void put(int key, int value)
     {
-        int bucket = MyHash(key) % NUM_BUCKETS;
-        if(buckets[bucket] == nullptr)
+        int bucket_idx = MyHash(key) % NUM_BUCKETS; // вычисление  индекса списка в массиве бУкетов
+        if(buckets[bucket_idx] == nullptr) // новый эелемент если список пустой
         {
-            buckets[bucket] = new MASYAListNode();
-            buckets[bucket]-> key = key;
-            buckets[bucket]-> val = value;
+            buckets[bucket_idx] = new MASYAListNode();
+            buckets[bucket_idx]-> key = key;
+            buckets[bucket_idx]-> val = value;
         }
         else
-        {
-            MASYAListNode * cur = buckets[bucket];
+        {   // проход по списку и попытка найти там элемент с нужным ключом
+            MASYAListNode * cur = buckets[bucket_idx];
             while (cur != nullptr)
             {
                 if(cur->key== key)
@@ -46,20 +51,20 @@ public:
             }
             if(cur != nullptr)
             {
-                cur->val = value;
+                cur->val = value; // нашли и записали новое значение
             }
             else
-            {
+            {   // создали новый элемент и делаем его новоой головой в списке котроый лежит в массиве
                 cur = new MASYAListNode();
                 cur->key = key;
                 cur->val = value;
-                cur->next =  buckets[bucket]; // указывает на прошлую голову которая хранилась в массиве списков
-                buckets[bucket] = cur; // кур записываем в массив (он стал новой головой)
+                cur->next =  buckets[bucket_idx]; // указывает на прошлую голову которая хранилась в массиве списков
+                buckets[bucket_idx] = cur; // кур записываем в массив (он стал новой головой)
             }      
         }        
     }
     
-    int get(int key)
+    int get(int key) // поиск по ключу
     {
         int bucket_idx = MyHash(key) % NUM_BUCKETS;
         MASYAListNode * cur =  buckets[bucket_idx];
