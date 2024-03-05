@@ -35,3 +35,25 @@ int main(int argc, char * argv[])
     auto res = wtf.twoSum(tmp,43);
     return 0;
 }
+
+// class Solution {
+// public:
+//     vector<int> twoSum(vector<int>& nums, int target) 
+//     {
+//         // соответствие числа его индексу в исходном массиве
+//         std::unordered_map<int, int> index;
+//         for(int i = 0; i< nums.size(); i++)
+//         {
+//             if (index.find(nums[i]) != index.end() && nums[i]*2 == target)
+//                 return {i, index.find(nums[i])->second};
+//             else
+//                 index[nums[i]] = i;
+
+//             if(index.find(target - nums[i]) != index.end() && i != index.find(target - nums[i])->second) 
+//             {
+//                 return {i, index.find(target - nums[i])->second};
+//             }
+//         }
+//         return {};
+//     }
+// };
