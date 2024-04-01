@@ -2,6 +2,9 @@
 #include <iostream>
 #include <iomanip>
 #include <math.h>
+#include <string>
+#include <vector>
+
 using namespace std;
 namespace MASYA
 {
@@ -67,7 +70,7 @@ void print_IntList(IntList &to_print)
 
 // КОНЕЦ штук для списка
 
-int main(int argc, char *argv[])
+int main3(int argc, char *argv[])
 {
     // списки из интов
     IntList myList;                // пустой список
@@ -253,5 +256,57 @@ int main(int argc, char *argv[])
     //     int B[6] = {1};
     //     Foo(B);
     //     std::cout<<B[3];
+
+
+    ////
     return 0;
 }
+///////////////////////// УКАЗАТЕЛИ НА ФУНКЦИЮ
+// это объявление типа указателя на функцию которая работает с элементами вертикальных формуляров
+typedef void (*StringFunction)(std::string& toProcess);
+
+// есть две функции которые работают 
+void toLower(std::string& toProcess) 
+{
+    for (auto & element : toProcess) 
+    {
+        element = std::tolower(element);
+    }
+}
+void toUpper(std::string& toProcess) 
+{
+    for (auto & element : toProcess) 
+    {
+        element = std::toupper(element);
+    }
+}
+
+int main(int argc, char * argv[]) 
+{
+    std::vector<std::string> text = {"Bubub", "Masya loves cake", "OLOLO"};
+    for (auto & theString : text) 
+        std::cout << theString << std::endl;
+
+    StringFunction myFunction;
+    switch (argc) 
+    {
+        case 1: 
+        {
+            myFunction = &toLower;
+            break;
+        }
+        case 2: 
+        {
+            myFunction = &toUpper;
+            break;
+        }
+    }
+    for (auto & theString : text) 
+    {
+        (*myFunction)(theString); // ввызов той ыфункции на которую указывакт указатель myFunction с параментом theString
+    }
+    for (auto & theString : text) 
+        std::cout << theString << std::endl;
+
+}
+
