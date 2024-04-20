@@ -257,25 +257,24 @@ int main3(int argc, char *argv[])
     //     Foo(B);
     //     std::cout<<B[3];
 
-
     ////
     return 0;
 }
 ///////////////////////// УКАЗАТЕЛИ НА ФУНКЦИЮ
 // это объявление типа указателя на функцию которая работает с элементами вертикальных формуляров
-typedef void (*StringFunction)(std::string& toProcess);
+typedef void (*StringFunction)(std::string &toProcess);
 
-// есть две функции которые работают 
-void toLower(std::string& toProcess) 
+// есть две функции которые работают
+void toLower(std::string &toProcess)
 {
-    for (auto & element : toProcess) 
+    for (auto &element : toProcess)
     {
         element = std::tolower(element);
     }
 }
-void toUpper(std::string& toProcess) 
+void toUpper(std::string &toProcess)
 {
-    for (auto & element : toProcess) 
+    for (auto &element : toProcess)
     {
         element = std::toupper(element);
     }
@@ -287,52 +286,50 @@ void toUpper(std::string& toProcess)
 
 // [aaaa|bbbb|cccc]
 
-struct Test1 
+struct Test1
 {
-    int a; // 4 byte
-    int b; // 4 byte
+    int a;   // 4 byte
+    int b;   // 4 byte
     float c; // 4 byte
-}; // 12 bytes
+};           // 12 bytes
 
+// [****]
 
- // [****]
-
-union Test1Union 
+union Test1Union
 {
     int a;
     int b;
     float c;
 }; // 4 bytes
 
-
-struct ListNodeA 
+struct ListNodeA
 {
     std::string imya;
-    ListNodeA* next;
+    ListNodeA *next;
 };
 
 struct ListNodeB
 {
     int telefon;
-    ListNodeB* next;
+    ListNodeB *next;
 };
 
 struct ListNodeC
 {
     float zarplata;
-    ListNodeC* next;
+    ListNodeC *next;
 };
 
-struct UniversalList 
+struct UniversalList
 {
-    char type = 0; // то с какой "буквой мы работаем" т.е. с каким из 3х списков 
-    union 
+    char type = 0; // то с какой "буквой мы работаем" т.е. с каким из 3х списков
+    union
     {
         char omg; // будет выводить ОШИБОЧНО в чар кусок памяти первого байта указателя !!
         int omgint;
-        ListNodeA* nextA; // мы можем доступиться только в 1 из списков
-        ListNodeB* nextB;
-        ListNodeC* nextC;
+        ListNodeA *nextA; // мы можем доступиться только в 1 из списков
+        ListNodeB *nextB;
+        ListNodeC *nextC;
     }; // 8 байтов (1 указатель - 8 байт)
 
     // ListNodeC myC;
@@ -342,7 +339,7 @@ struct UniversalList
     // int omgInt = a.omgint; // 0xFFAA;
 };
 
-int main(int argc, char * argv[]) 
+int main(int argc, char *argv[])
 {
     std::cout << " Test1 size is " << sizeof(Test1) << std::endl;
     std::cout << " Test1Union size is " << sizeof(Test1Union) << std::endl;
@@ -365,32 +362,33 @@ int main(int argc, char * argv[])
     return 0;
 }
 
-int main2(int argc, char * argv[]) 
+int main2(int argc, char *argv[])
 {
     std::vector<std::string> text = {"Bubub", "Masya loves cake", "OLOLO"};
-    for (auto & theString : text) 
+    for (auto &theString : text)
         std::cout << theString << std::endl;
 
     StringFunction myFunction;
-    switch (argc) 
+    switch (argc)
     {
-        case 1: 
-        {
-            myFunction = &toLower;
-            break;
-        }
-        case 2: 
-        {
-            myFunction = &toUpper;
-            break;
-        }
+    case 1:
+    {
+        myFunction = &toLower;
+        break;
     }
-    for (auto & theString : text) 
+    case 2:
+    {
+        myFunction = &toUpper;
+        break;
+    }
+    }
+    for (auto &theString : text)
     {
         (*myFunction)(theString); // ввызов той ыфункции на которую указывакт указатель myFunction с параментом theString
     }
-    for (auto & theString : text) 
+    for (auto &theString : text)
         std::cout << theString << std::endl;
 
-}
 
+
+    return 0;}
