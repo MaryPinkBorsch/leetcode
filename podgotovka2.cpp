@@ -280,8 +280,92 @@ void toUpper(std::string& toProcess)
         element = std::toupper(element);
     }
 }
+///////////////////////////////////// UNION
+
+// унион это типо структруа где можно хранить память актуальную инфу только в одном из полей
+// имеет размер максимального типа данных в унион (инт чар и тп)
+
+// [aaaa|bbbb|cccc]
+
+struct Test1 
+{
+    int a; // 4 byte
+    int b; // 4 byte
+    float c; // 4 byte
+}; // 12 bytes
+
+
+ // [****]
+
+union Test1Union 
+{
+    int a;
+    int b;
+    float c;
+}; // 4 bytes
+
+
+struct ListNodeA 
+{
+    std::string imya;
+    ListNodeA* next;
+};
+
+struct ListNodeB
+{
+    int telefon;
+    ListNodeB* next;
+};
+
+struct ListNodeC
+{
+    float zarplata;
+    ListNodeC* next;
+};
+
+struct UniversalList 
+{
+    char type = 0; // то с какой "буквой мы работаем" т.е. с каким из 3х списков 
+    union 
+    {
+        char omg; // будет выводить ОШИБОЧНО в чар кусок памяти первого байта указателя !!
+        int omgint;
+        ListNodeA* nextA; // мы можем доступиться только в 1 из списков
+        ListNodeB* nextB;
+        ListNodeC* nextC;
+    }; // 8 байтов (1 указатель - 8 байт)
+
+    // ListNodeC myC;
+    // UniversalList a;
+    // a.nextC = &myC; // 0xFFFFFFFAA;
+    // char omgChar = a.omg; // 0xAA;
+    // int omgInt = a.omgint; // 0xFFAA;
+};
 
 int main(int argc, char * argv[]) 
+{
+    std::cout << " Test1 size is " << sizeof(Test1) << std::endl;
+    std::cout << " Test1Union size is " << sizeof(Test1Union) << std::endl;
+
+    Test1 tmp1;
+    tmp1.a = 10;
+    tmp1.b = 15;
+
+    std::cout << " Test1 a " << tmp1.a << std::endl;
+    std::cout << " Test1 b " << tmp1.b << std::endl;
+
+    Test1Union tmp1Union;
+    tmp1Union.a = 10;
+    tmp1Union.b = 15;
+
+    std::cout << " Test1Union a " << tmp1Union.a << std::endl;
+    std::cout << " Test1Union b " << tmp1Union.b << std::endl;
+    std::cout << " Test1Union c " << tmp1Union.c << std::endl;
+
+    return 0;
+}
+
+int main2(int argc, char * argv[]) 
 {
     std::vector<std::string> text = {"Bubub", "Masya loves cake", "OLOLO"};
     for (auto & theString : text) 
