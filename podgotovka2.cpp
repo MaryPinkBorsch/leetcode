@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 namespace MASYA
@@ -339,8 +340,73 @@ struct UniversalList
     // int omgInt = a.omgint; // 0xFFAA;
 };
 
+enum Cvet
+{
+    RED = 0,
+    GREEN = 1,
+    BLUE = 2,
+    PINK = 666
+};
+
+std::string Cvet2String(Cvet cvet) 
+{
+    static unordered_map<Cvet, std::string> c2s;
+    if (c2s.empty()) 
+    {
+        c2s[RED] = "Red";
+        c2s[GREEN] = "Green";
+        c2s[BLUE] = "Blue";
+        c2s[PINK] = "Pink";
+    }
+    return c2s[cvet];
+} 
+
+Cvet String2Cvet(std::string cvet) 
+{
+    static unordered_map<std::string, Cvet> c2s;
+    if (c2s.empty()) 
+    {
+        c2s["Red"] = RED;
+        c2s["Green"] = GREEN;
+        c2s["Blue"] = BLUE;
+        c2s["Pink"] = PINK;
+    }
+    return c2s[cvet];
+} 
+
 int main(int argc, char *argv[])
 {
+    Cvet moy_lubimy_cvet = (Cvet)666;
+
+    if (moy_lubimy_cvet == PINK) 
+    {
+        std::cout << "ZELENY" << std::endl;
+        std::cout << "PINK " << Cvet::PINK << std::endl;
+    }
+
+    std::cout << Cvet2String(PINK) << std::endl;
+    std::string novii_cvet = "korichnevii";
+    std::cin >> novii_cvet;
+    std::cout << (int)String2Cvet(novii_cvet) << std::endl;
+
+    switch (moy_lubimy_cvet) 
+    {
+        case RED:
+        {}
+        break;
+        case GREEN:
+        {}
+        break;
+        case BLUE:
+        {}
+        break;
+        case PINK:
+        {}
+        break;
+        default:
+        break;
+    }
+
     std::cout << " Test1 size is " << sizeof(Test1) << std::endl;
     std::cout << " Test1Union size is " << sizeof(Test1Union) << std::endl;
 
