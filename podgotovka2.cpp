@@ -6,14 +6,21 @@
 #include <vector>
 #include <unordered_map>
 
+int AAAOMG = 5;
+
 using namespace std;
 namespace MASYA
 {
     int AAAOMG = 5;
+    void foobar() 
+    {
+        AAAOMG = 10;
+    }
 }
 void test(int value, int *p_value, int &ref_value)
 {
     MASYA::AAAOMG = 6;
+    ::AAAOMG = 7;
     value = 1;
     *p_value = 2;
     ref_value = 3;
