@@ -245,7 +245,6 @@ void delete_nomer_el(int n, IntListNode *&head)
         IntListNode *tmp = cur->next->next;
         delete cur->next;
         cur->next = tmp;
-
     }
 }
 
@@ -259,6 +258,364 @@ void print_IntList(IntList &to_print)
     }
     std::cout << std::endl;
 }
+
+///////////////////////////////////// решение прикладных задач со списками с файла Exam.2
+// struct IntListNode // ноде - это элемент списка, список это куча объектов структуры,
+// // каждый из которых содержит указатель на следующий элемент
+// {
+//     int value = 0;               // значение этого элемента списка
+//     IntListNode *next = nullptr; // указатель на следующий элемент списка
+// };
+
+// вставить элемент перед последним элементом списка:
+void vstavka_pered_poslednim(IntListNode *to_vstavit, IntListNode *&head) // т.к. мы хотим работать и менять голову передаем голову по ссылке
+{
+    IntListNode *cur = head;
+    if (cur == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+
+    if (cur->next == 0)
+    {
+        IntListNode *tmp = head;
+        head = to_vstavit;
+        head->next = tmp;
+        return;
+    }
+    while (cur->next->next != 0)
+    {
+        cur = cur->next;
+    }
+    if (cur->next->next == 0 && cur->next != 0) // if не обязателен но я так хочу
+    {
+        IntListNode *tmp = cur->next;
+        cur->next = to_vstavit;
+        cur->next->next = tmp;
+    }
+}
+
+// 2)вставить элемент перед первым элементом, имеющим заданное значение;
+
+void vstavka2(IntListNode *to_vstavit, IntListNode *&head, int val)
+{
+    IntListNode *cur = head;
+    if (cur == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+    if (cur->value == val)
+    {
+        IntListNode *tmp = head;
+        head = to_vstavit;
+        head->next = tmp;
+        return;
+    }
+    while (cur != 0 && cur->next != 0 && cur->next->value != val)
+    {
+        cur = cur->next;
+    }
+    if (cur->next == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+    else
+    {
+        IntListNode *tmp = cur->next;
+        cur->next = to_vstavit;
+        cur->next->next = tmp;
+    }
+}
+
+void vstavka2_2(IntListNode *to_vstavit, IntListNode **head, int val) // ТУТ 2й УКАЗАТЕЛЬ = указатель по ссылке
+{
+    IntListNode *cur = *head;
+    if (cur == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+    if (cur->value == val)
+    {
+        IntListNode *tmp = *head;
+        *head = to_vstavit;
+        (*head)->next = tmp; // при разыменовании ДВОЙНОГО указателя получается ОДИНАРНЫЙ (обычный) указатель
+        return;
+    }
+    while (cur != 0 && cur->next != 0 && cur->next->value != val)
+    {
+        cur = cur->next;
+    }
+    if (cur->next == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+    else
+    {
+        IntListNode *tmp = cur->next;
+        cur->next = to_vstavit;
+        cur->next->next = tmp;
+    }
+}
+
+// 3) элемент перед каждым элементом, имеющим заданное значение;
+void vstavka3(IntListNode *to_vstavit, IntListNode **head, int val) // ТУТ 2й УКАЗАТЕЛЬ = указатель по ссылке
+{
+    IntListNode *cur = *head;
+    if (cur == 0)
+    {
+        std::cout << "oshibka, net elementa for vstavka";
+        return;
+    }
+    if (cur->value == val)
+    {
+        IntListNode *tmp = *head;
+        *head = to_vstavit;
+        (*head)->next = tmp; // при разыменовании ДВОЙНОГО указателя получается ОДИНАРНЫЙ (обычный) указатель
+    }
+
+    while (cur->next != 0)
+    {
+        if (cur != 0 && cur->next != 0 && cur->next->value == val)
+        {
+            IntListNode *tmp = cur->next;
+            cur->next = to_vstavit;
+            cur->next->next = tmp;
+            cur = cur->next;
+        }
+        cur = cur->next;
+    }
+}
+
+// 4) элемент после первого элемента, имеющего заданное значение;
+
+void vstavka4(IntListNode **head, int val, int new_val)
+{
+    if (*head == 0)
+        return;
+
+    IntListNode *cur = *head;
+
+    while (cur->next != 0 && cur->value != val)
+        cur = cur->next;
+
+    if (cur->value == val)
+    {
+        IntListNode *to_vstavit = new IntListNode;
+        if (to_vstavit != 0) // проверка на выделение памяти
+        {
+            to_vstavit->value = new_val;
+
+            to_vstavit->next = cur->next;
+            cur->next = to_vstavit;
+        }
+    }
+}
+
+// 5) элемент после каждого элемента, имеющего заданное значение;
+
+void vstavka5(IntListNode **head, int val, int new_val)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+
+    while (cur != 0)
+    {
+        if (cur && cur->value == val)
+        {
+            IntListNode *to_vstavit = new IntListNode;
+            if (to_vstavit != 0) // проверка на выделение памяти
+            {
+                to_vstavit->value = new_val;
+                to_vstavit->next = cur->next;
+                cur->next = to_vstavit;
+                cur = cur->next; // переходим вперед чтоб не зависнуть в бесконечном цикле
+            }
+        }
+        cur = cur->next;
+    }
+}
+
+// 12) заданное число элементов после всех элементов, имеющих заданное значение
+
+void vstavka12(int kolvo, int val, int new_val, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+
+    while (cur != 0)
+    {
+        if (cur && cur->value == val)
+        {
+            for (int i = 0; i < kolvo; i++)
+            {
+                IntListNode *to_vstavit = new IntListNode;
+                if (to_vstavit != 0) // проверка на выделение памяти
+                {
+                    to_vstavit->value = new_val;
+                    to_vstavit->next = cur->next;
+                    cur->next = to_vstavit;
+                    cur = cur->next; // переходим вперед чтоб не зависнуть в бесконечном цикле
+                }
+            }
+        }
+        cur = cur->next; // переходим с последнего вставленного элемента на следующий (to_vstavit->next)
+    }
+}
+
+// 2. Заменить:  значения n элементов, начиная с элемента с номером k (пусть с 1), заданными значениями соответственно
+void zamena(int n, int k, int new_val, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+    int cur_num = 1;
+    while (cur != 0)
+    {
+        if (cur_num >= k && cur_num < k + n)
+            cur->value = new_val;
+        cur = cur->next;
+        cur_num++;
+    }
+}
+
+// 4. Найти:  номера всех элементов с заданным значением
+
+void poisk(int find_val, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+    int cur_num = 1;
+    while (cur != 0)
+    {
+        if (cur->value == find_val)
+            std::cout << cur_num << " ";
+        cur = cur->next;
+        cur_num++;
+    }
+}
+
+// УДАЛИТЬ
+// 1) элемент с заданным номером;              // номер пусть с 0 начинается
+void delete1(int nomer, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+    IntListNode *prev = nullptr;
+    int counter = 0;
+    while (cur != 0)
+    {
+        if (counter == nomer)
+        {
+            if (prev)
+            {
+                prev->next = cur->next;
+                delete cur;
+                cur = prev->next;
+                return;
+            }
+            else
+            {
+                *head = cur->next;
+                delete cur;
+                cur = *head;
+                return;
+            }
+        }
+        if (cur)
+        {
+            prev = cur;
+            cur = cur->next;
+            counter++;
+        }
+    }
+    std::cout << " Элемент для удаления не найден";
+}
+
+// 3) последний по порядку элемент с заданным значением;
+void delete3(int del_val, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+    bool found = false;
+    IntListNode *prev = nullptr;
+    IntListNode *prev_2 = nullptr; // прев для поиска последнего элемента, после которого идет элемент с заданным значением
+
+    while (cur != 0)
+    {
+        if (cur->value == del_val)
+        {
+            prev_2 = prev;
+            found = true;
+        }
+        if (cur)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+    }
+    if (found)
+    {
+        if (prev_2)
+        {
+            IntListNode *tmp = prev_2->next;
+            prev_2->next = tmp->next;
+            delete tmp;
+        }
+        else
+        {
+            IntListNode *tmp = (*head)->next;
+            delete *head;
+            *head = tmp;
+        }
+    }
+}
+
+// 4) все элементы с заданным значением;
+void delete4(int del_val, IntListNode **head)
+{
+    if (*head == 0)
+        return;
+    IntListNode *cur = *head;
+    bool found = false;
+    IntListNode *prev = nullptr;
+
+    while (cur != 0)
+    {
+        if (cur->value == del_val)
+        {
+            if (prev)
+            {
+                prev->next = prev->next->next;
+                delete cur;
+                cur = prev->next;
+            }
+            else
+            {
+                *head = (*head)->next;
+                delete cur;
+                cur = *head;
+            }
+        }
+
+        if (cur)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 // КОНЕЦ штук для списка
 
@@ -357,39 +714,39 @@ struct UniversalList
 
 // а стало:
 
-struct List1IdxNode 
+struct List1IdxNode
 {
-    int value = 0;               // значение этого элемента списка
+    int value = 0; // значение этого элемента списка
     int nextIdx = -1;
 };
 
-struct List1Idx 
+struct List1Idx
 {
     static const int MAX_ELEMENTS = 100;
     List1IdxNode elements[MAX_ELEMENTS]; // статический массив из элементов индексного списка
-    int headIdx = -1; // индекс головы
-    int freeIdx = -1; // индекс первого свободного элемента
+    int headIdx = -1;                    // индекс головы
+    int freeIdx = -1;                    // индекс первого свободного элемента
 
     List1Idx() // конструктор инициализирует элементы чтобы сформировать пустой индексный список
     {
-        for (int i = 0; i < MAX_ELEMENTS - 1; ++i) 
+        for (int i = 0; i < MAX_ELEMENTS - 1; ++i)
         {
-            elements[i].nextIdx = i+1;
+            elements[i].nextIdx = i + 1;
         }
-        elements[MAX_ELEMENTS - 1].nextIdx =-1;
+        elements[MAX_ELEMENTS - 1].nextIdx = -1;
         freeIdx = 0;
     }
 
-    void AddToTail(int value) 
+    void AddToTail(int value)
     {
         if (freeIdx != -1) // если в свободном списке что-то есть
         {
-            int newElementIdx = freeIdx; // индекс нового элемента (голова свободного списка)
+            int newElementIdx = freeIdx;               // индекс нового элемента (голова свободного списка)
             freeIdx = elements[newElementIdx].nextIdx; // новая свободная голова - то куда указывала старая свободная голова (может быть -1)
-            elements[newElementIdx].value = value; // заполнили значение
-            if (headIdx == -1) // если головы заполненного не было - новый это будет голова
+            elements[newElementIdx].value = value;     // заполнили значение
+            if (headIdx == -1)                         // если головы заполненного не было - новый это будет голова
                 headIdx = newElementIdx;
-            else 
+            else
             {
                 // иначе пройдем по заполненному списку до хвоста - элемента у которого некст это -1
                 int nextIdx = elements[headIdx].nextIdx;
@@ -400,12 +757,6 @@ struct List1Idx
             elements[newElementIdx].nextIdx = -1; // только что выделенный элемент - новый хвост, некст у него -1
         }
     }
-
-
-
-
 };
-
-
 
 ///////////////////////////////////////////////
