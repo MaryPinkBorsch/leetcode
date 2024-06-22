@@ -760,3 +760,47 @@ struct List1Idx
 };
 
 ///////////////////////////////////////////////
+
+// СТРОКИ StrL StrM
+
+// STR_L
+struct StrL
+{
+    static const int N = 10;
+
+    char str[N];
+    int len = 0;
+};
+
+// STR_M
+struct StrM
+{
+    static const int N = 10;
+    char str[N+1];
+    char Mark;
+};
+
+//2. Заменить в строке все включения заданной буквы на другую букву.
+
+//StrL
+void strL_2(StrL &stroka, char a, char b)
+{
+    for(int i=0; i < stroka.len; i++)
+    {
+        if(stroka.str[i]== a)
+            stroka.str[i]=b;
+    }
+}
+
+void strM_2(StrM stroka, char a, char b)
+{
+    int i =0;
+    while(stroka.str[i] != stroka.Mark)
+    {
+        if(stroka.str[i]== a)
+            stroka.str[i]=b;
+
+        i++;
+    }
+
+}
