@@ -78,3 +78,16 @@ int main(int argc, char *argv[])
 //         }
 //         return res;
 //     }
+
+class Solution
+{
+public:
+    string toLowerCase(string s)
+    {
+        for (auto &charik : s)
+        {
+            charik = tolower(charik);
+        }
+        return s;
+    }
+};
