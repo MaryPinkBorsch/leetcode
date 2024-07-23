@@ -47,7 +47,7 @@ public:
                 }
                 else 
                 {
-                    if (abs(L) < abs(R)) 
+                    if (abs(nums[L]) < abs(nums[R])) 
                     {
                         res.push_back(nums[L]*nums[L]);
                         L--;
