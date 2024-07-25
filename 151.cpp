@@ -20,7 +20,7 @@ public:
 
                 if (end == -1)
                     end = i;
-                    
+
                 if (end != -1 && start == -1)
                 {
                     if (i != 0 && s[i - 1] == ' ')
@@ -68,3 +68,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+//https://leetcode.com/problems/reverse-words-in-a-string/description/?envType=study-plan-v2&envId=leetcode-75
