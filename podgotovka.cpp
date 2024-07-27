@@ -91,3 +91,61 @@ public:
         return s;
     }
 };
+
+// class Solution2 {
+// public:
+//     int countConsistentStrings(string allowed, vector<string>& words)
+//     {
+//         unordered_set <char> mapp;
+//         for(int i =0; i < allowed.size(); i++)
+//         {
+//             mapp.insert(allowed[i]);
+//         }
+//         int res=0;
+//         for( auto & wordik : words)
+//         {
+//             bool norm = true;
+//             for(int i =0; i < wordik.size(); i++)
+//             {
+//                 if(mapp.find(wordik[i]) == mapp.end())
+//                 {
+//                     norm = false;
+//                     break;
+//                 }
+
+//             }
+//             if(norm)
+//                 res++;
+//         }
+//         return res;
+//     }
+// };
+
+// class Solution {
+// public:
+//     vector<int> createTargetArray(vector<int>& nums, vector<int>& index)
+//     {
+//         vector<int> res;
+//         res.reserve(nums.size());
+//         for (int i =0; i < nums.size(); i++)
+//         {
+//             res.insert(res.begin() + index[i], nums[i]);
+//         }
+//         return res;
+//     }
+// };
+
+class Solution3
+{
+public:
+    string restoreString(string s, vector<int> &indices)
+    {
+        string res;
+        res.resize(s.size());
+        for (int i = 0; i < s.size(); i++)
+        {
+            res[indices[i]] = s[i];
+        }
+        return res;
+    }
+};
