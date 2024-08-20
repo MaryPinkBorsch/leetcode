@@ -7,6 +7,29 @@ using namespace std;
 
 class Solution {
 public:
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+        vector<int> pairs(spells.size());
+        sort(potions.begin(), potions.end());
+        for (int i = 0; i < spells.size(); ++i) 
+        {
+            pairs[i] = 0;
+            if (!spells[i])
+                continue;
+            std::vector<int>::iterator potion;
+            if (success%spells[i] == 0) 
+                potion = lower_bound(potions.begin(), potions.end(), success/spells[i]);
+                 // типо стандартный бинарный поиск (ищем не меньше чем последний параметр)
+            else
+                potion = upper_bound(potions.begin(), potions.end(), success/spells[i]);
+                // типо еще стандартный бинарный поиск (ищем строго больше чем последний параметр)
+            pairs[i] = potions.end() - potion;
+        }
+        return pairs;
+    }
+};
+
+class Solution2 {
+public:
     vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) 
     {
         int sum = 0;
