@@ -45,6 +45,12 @@
 
 // class Solution {
 // public:
+// Solution() // ЧИТ ДЛЯ СКОРОСТИ!!!!!!!!
+//     {
+//         ios_base::sync_with_stdio(false);
+//         cin.tie(NULL);
+//         cout.tie(NULL);
+//     } 
 //     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
 //     {
 //         vector <TreeNode*> putP; // путь от корня dо элемента р
