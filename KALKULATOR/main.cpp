@@ -34,27 +34,30 @@ void print(vector<Element> &to_print) // printit vectori
     {
         switch (to_print[i].type)
         {
-            case NUMBER:
-            {
-                cout << to_print[i].number;
-                break;
-            }
-            case OPERATOR:
-            {
-                cout << to_print[i].op;
-                break;
-            }
-            default:
-                abort;
+        case NUMBER:
+        {
+            cout << to_print[i].number;
+            break;
+        }
+        case OPERATOR:
+        {
+            cout << to_print[i].op;
+            break;
+        }
+        default:
+            abort;
         }
     }
-    cout << endl<< endl;
+    cout << endl
+         << endl;
 }
 
 int main(int argc, char *argv[])
 {
-    op_priority['*'] = 2; // круче приоритет и выше и раньше делается
+    op_priority['*'] = 2;
+    op_priority['/'] = 2; // круче приоритет и выше и раньше делается
     op_priority['+'] = 1;
+    op_priority['-'] = 1;
 
     string input; // сохраняем то что нам надо посчитать
     cout << " Введите операцию в калькулятор :) " << endl;
@@ -88,6 +91,8 @@ int main(int argc, char *argv[])
             i = j - 1; // переставимм И на первый символ после числа (если оно не однозначное а 2значное или тп)
         }
     }
+
+    print(infix_form);
     // надо сделать в другую форму постфиксную (из инфиксной)
     stack<Element> oper_stack;
     vector<Element> postfix_form;
@@ -114,9 +119,48 @@ int main(int argc, char *argv[])
         oper_stack.pop();                         // выпихиваем нафиг
     }
 
-    cout << input << endl;
-    print(infix_form);
     print(postfix_form);
 
+    stack<double> values;
+    for (int i = 0; i < postfix_form.size(); i++)
+    {
+        Element cur = postfix_form[i];
+        if (cur.type == NUMBER)
+            values.push(cur.number);
+        else if (cur.type == OPERATOR)
+        {
+            double second = values.top();
+            values.pop();
+            double first = values.top();
+            values.pop();
+
+            switch (cur.op)
+            {
+                case '+':
+                {
+                    values.push(first + second);
+                    break;
+                }
+                case '*':
+                {
+                    values.push(first * second);
+                    break;
+                }
+                case '/':
+                {
+                    values.push(first / second);
+                    break;
+                }
+                case '-':
+                {
+                    values.push(first - second);
+                    break;
+                }
+                default:
+                    abort();
+            }
+        }
+    }
+    cout <<"РЕЗУЛЬТАТ: "<< values.top() <<endl;
     return 0;
 }
