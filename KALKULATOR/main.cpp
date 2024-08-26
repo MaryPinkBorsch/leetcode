@@ -11,7 +11,9 @@ using namespace std;
 enum Element_type
 {
     NUMBER,
-    OPERATOR
+    OPERATOR,
+    L_SKOBA,
+    R_SKOBA // левая и правя скобки ()
 };
 
 struct Element
@@ -42,6 +44,16 @@ void print(vector<Element> &to_print) // printit vectori
         case OPERATOR:
         {
             cout << to_print[i].op;
+            break;
+        }
+        case L_SKOBA:
+        {
+            cout << '(';
+            break;
+        }
+        case R_SKOBA:
+        {
+            cout << ')';
             break;
         }
         default:
@@ -90,6 +102,18 @@ int main(int argc, char *argv[])
             infix_form.push_back(tmp);
             i = j - 1; // переставимм И на первый символ после числа (если оно не однозначное а 2значное или тп)
         }
+        else if (input[i] == '(')
+        {
+            Element tmp;
+            tmp.type = L_SKOBA;
+            infix_form.push_back(tmp);
+        }
+        else if (input[i] == ')')
+        {
+            Element tmp;
+            tmp.type = R_SKOBA;
+            infix_form.push_back(tmp);
+        }
     }
 
     print(infix_form);
@@ -110,6 +134,21 @@ int main(int argc, char *argv[])
                 oper_stack.pop();                         // выпихиваем нафиг
             }
             oper_stack.push(cur);
+        }
+        else if (cur.type == L_SKOBA)
+        {
+            oper_stack.push(cur);
+        }
+        else if (cur.type == R_SKOBA)
+        {
+
+            while (!oper_stack.empty() && oper_stack.top().type != L_SKOBA) // пока приоритет того что сверху в стеке >= приоритета знака cur
+            {
+                postfix_form.push_back(oper_stack.top()); // по алгоритму до первой левой скобки все пихаем в постифкс форм
+                oper_stack.pop();                         // выпихиваем нафиг
+            }
+            if (!oper_stack.empty())
+                oper_stack.pop();
         }
         i++;
     }
@@ -136,31 +175,31 @@ int main(int argc, char *argv[])
 
             switch (cur.op)
             {
-                case '+':
-                {
-                    values.push(first + second);
-                    break;
-                }
-                case '*':
-                {
-                    values.push(first * second);
-                    break;
-                }
-                case '/':
-                {
-                    values.push(first / second);
-                    break;
-                }
-                case '-':
-                {
-                    values.push(first - second);
-                    break;
-                }
-                default:
-                    abort();
+            case '+':
+            {
+                values.push(first + second);
+                break;
+            }
+            case '*':
+            {
+                values.push(first * second);
+                break;
+            }
+            case '/':
+            {
+                values.push(first / second);
+                break;
+            }
+            case '-':
+            {
+                values.push(first - second);
+                break;
+            }
+            default:
+                abort();
             }
         }
     }
-    cout <<"РЕЗУЛЬТАТ: "<< values.top() <<endl;
+    cout << "РЕЗУЛЬТАТ: " << values.top() << endl;
     return 0;
 }
