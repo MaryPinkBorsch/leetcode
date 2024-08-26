@@ -59,6 +59,7 @@ void print(vector<Element> &to_print) // printit vectori
         default:
             abort;
         }
+        cout<<" ";
     }
     cout << endl
          << endl;
@@ -128,7 +129,7 @@ int main(int argc, char *argv[])
             postfix_form.push_back(cur);
         else if (cur.type == OPERATOR)
         {
-            while (!oper_stack.empty() && op_priority[oper_stack.top().op] >= op_priority[cur.op]) // пока приоритет того что сверху в стеке >= приоритета знака cur
+            while (!oper_stack.empty() && oper_stack.top().type != L_SKOBA && op_priority[oper_stack.top().op] >= op_priority[cur.op]) // пока приоритет того что сверху в стеке >= приоритета знака cur
             {
                 postfix_form.push_back(oper_stack.top()); // по алгоритму то что приоритетнее (топ) пихаем в постфикс массив
                 oper_stack.pop();                         // выпихиваем нафиг
